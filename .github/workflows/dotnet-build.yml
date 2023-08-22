@@ -1,0 +1,42 @@
+name: .NET Build
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'PotionConverter/**'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'PotionConverter/**'
+
+env:
+  CSPROJ: PotionConverter/PotionConverter.csproj
+  RELEASE_TYPE: Release
+      
+jobs:
+  build:
+    name: Build for ${{ matrix.platform }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [linux-x64, win-x64, macos-x64]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET 6.0
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build -c ${{ env.RELEASE_TYPE }} --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Publish
+      run: dotnet publish ${{ env.CSPROJ }} --self-contained true --runtime ${{ matrix.platform }} --configuration ${{ env.RELEASE_TYPE }} /p:PublishTrimmed=true /p:PublishReadyToRun=true -o ./publish/${{ matrix.platform }}
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.platform }}-artifacts
+        path: ./publish/${{ matrix.platform }}
