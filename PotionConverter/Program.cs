@@ -13,13 +13,6 @@ namespace PotionConverter
 			"potion.png", "splash_potion.png", "lingering_potion.png", "potion_overlay.png", "tipped_arrow_base.png", "tipped_arrow_head.png"
 		};
 
-		private static readonly JsonSerializerSettings _serializerSettings = new()
-		{
-			Formatting = Formatting.Indented,
-			NullValueHandling = NullValueHandling.Ignore,
-			DefaultValueHandling = DefaultValueHandling.Ignore
-		};
-
 		private static void Main()
 		{
 			try
@@ -29,7 +22,7 @@ namespace PotionConverter
 				if (!File.Exists(POTIONS_FILE))
 					throw new FileNotFoundException("potions.json not found.");
 
-				List<Potion>? potions = JsonConvert.DeserializeObject<List<Potion>>(File.ReadAllText(POTIONS_FILE), _serializerSettings);
+				List<Potion>? potions = JsonConvert.DeserializeObject<List<Potion>>(File.ReadAllText(POTIONS_FILE));
 				if (potions == null || potions.Count == 0)
 					throw new FileNotFoundException("No potions found in potions.json");
 
@@ -94,15 +87,18 @@ namespace PotionConverter
 
 			if (potion.PotionName != null)
 			{
-				Console.WriteLine($"Creating potion: {potion.Name}");
+				Console.WriteLine($"Creating potion: {potion.Name} (P: {!potion.DisablePotion} | S: {!potion.DisableSplashPotion} | L: {!potion.DisableLingeringPotion})");
 
 				Image<Rgba32> potionOverlay = CreateOverlayTexture(potionOverlayImage, potion.GetColour());
-				tasks.AddRange(new List<Task>
-				{
-					ApplyOverlayTexture(potionImg, potionOverlay, potion.GetPotionName()!),
-					ApplyOverlayTexture(splashImg, potionOverlay, potion.GetSplashPotionName()!),
-					ApplyOverlayTexture(lingeringImg, potionOverlay, potion.GetLingeringPotionName()!)
-				});
+
+				if (!potion.DisablePotion)
+					tasks.Add(ApplyOverlayTexture(potionImg, potionOverlay, potion.GetPotionName()!));
+
+				if (!potion.DisableSplashPotion)
+					tasks.Add(ApplyOverlayTexture(splashImg, potionOverlay, potion.GetSplashPotionName()!));
+
+				if (!potion.DisableLingeringPotion)
+					tasks.Add(ApplyOverlayTexture(lingeringImg, potionOverlay, potion.GetLingeringPotionName()!));
 			}
 
 			if (potion.TippedArrowName != null)

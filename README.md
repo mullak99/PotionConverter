@@ -35,5 +35,4 @@ Will potentially be integrated into [MCTools](https://github.com/mullak99/MCTool
 - tipped_arrow_head.png
 
 ## Notes
-- The current version generates additional files that are usused by Bedrock.
 - The colours may be slightly different from Java. This seems to be due to slight differences with the floating-point rounding.
