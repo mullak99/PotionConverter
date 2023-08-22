@@ -26,9 +26,6 @@ Will potentially be integrated into [MCTools](https://github.com/mullak99/MCTool
 3) Run the PotionConverter executable
 4) Converted files will be placed inside an "output" folder
 
-_**P.S:** The current version generates additional files that are usused by Bedrock._  
-_**P.S.S:** The colours may be slightly different from Java. This seems to be due to slight differences with the floating-point rounding._
-
 ### Required Files
 - potion.png
 - splash_potion.png
@@ -36,3 +33,7 @@ _**P.S.S:** The colours may be slightly different from Java. This seems to be du
 - potion_overlay.png
 - tipped_arrow_base.png
 - tipped_arrow_head.png
+
+## Notes
+- The current version generates additional files that are usused by Bedrock.
+- The colours may be slightly different from Java. This seems to be due to slight differences with the floating-point rounding.
