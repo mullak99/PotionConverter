@@ -20,7 +20,7 @@
 		"PotionName": "digSpeed",
 		"DisableLingeringPotion": true,
 		"Effect": {
-			"Colour": "14270531"
+			"Colour": "16512093"
 		}
 	},
 	{
@@ -28,7 +28,7 @@
 		"PotionName": "digSlowdown",
 		"DisableLingeringPotion": true,
 		"Effect": {
-			"Colour": "4866583"
+			"Colour": "6707743"
 		}
 	},
 	{
@@ -68,7 +68,7 @@
 		"PotionName": "confusion",
 		"DisableLingeringPotion": true,
 		"Effect": {
-			"Colour": "5578058"
+			"Colour": "8531057"
 		}
 	},
 	{
@@ -84,7 +84,7 @@
 		"PotionName": "resistance",
 		"DisableLingeringPotion": true,
 		"Effect": {
-			"Colour": "9520880"
+			"Colour": "16422400"
 		}
 	},
 	{
@@ -116,7 +116,7 @@
 		"PotionName": "blindness",
 		"DisableLingeringPotion": true,
 		"Effect": {
-			"Colour": "2039587"
+			"Colour": "4606790"
 		}
 	},
 	{
@@ -132,7 +132,7 @@
 		"PotionName": "hunger",
 		"DisableLingeringPotion": true,
 		"Effect": {
-			"Colour": "5797459"
+			"Colour": "8037235"
 		}
 	},
 	{
@@ -164,7 +164,7 @@
 		"PotionName": "healthBoost",
 		"DisableLingeringPotion": true,
 		"Effect": {
-			"Colour": "16284963"
+			"Colour": "16756016"
 		}
 	},
 	{
@@ -172,7 +172,7 @@
 		"PotionName": "absorption",
 		"DisableLingeringPotion": true,
 		"Effect": {
-			"Colour": "0x2552A5"
+			"Colour": "3504115"
 		}
 	},
 	{
@@ -188,7 +188,7 @@
 		"PotionName": "levitation",
 		"DisableLingeringPotion": true,
 		"Effect": {
-			"Colour": "0xCEFFFF"
+			"Colour": "16317057"
 		}
 	},
 	{

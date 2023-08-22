@@ -20,7 +20,7 @@ A standalone tool for converting Java Edition potion and tipped arrow textures t
 
 Will potentially be integrated into [MCTools](https://github.com/mullak99/MCTools) and/or [Obsidian API](https://github.com/mullak99s-Faithful/Obsidian) at some point.
 
-## How-to use
+## Converting Java to Bedrock
 1) [Download](https://github.com/mullak99/PotionConverter/actions/workflows/dotnet-build.yml) (Open the latest successful action, and download the artifact for your OS) and extract the tool somewhere
 2) Drag the required files from a Java resourcepack into the same folder as the executable (listed below)
 3) Run the PotionConverter executable
@@ -33,6 +33,19 @@ Will potentially be integrated into [MCTools](https://github.com/mullak99/MCTool
 - potion_overlay.png
 - tipped_arrow_base.png
 - tipped_arrow_head.png
+
+## Reverse Engineering Bedrock Colours
+1) Do steps 1-2 as above
+2) Drag the required files from a Java resourcepack into the same folder as the executable (listed below)
+3) Add Bedrock potion textures to a "reverse" folder
+3) Run PotionConverter with the "reverse" argument (e.g. "./PotionConverter reverse")
+4) Colours will be outputted into "potions_reverseengineered.txt"
+
+### Required Files
+- potion.png
+- splash_potion.png
+- lingering_potion.png
+- potion_overlay.png
 
 ## Notes
 - The colours may be slightly different from Java. This seems to be due to slight differences with the floating-point rounding.
