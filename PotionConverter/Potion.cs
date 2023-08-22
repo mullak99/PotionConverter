@@ -48,7 +48,15 @@
 			=> TippedArrowName != null ? $"tipped_arrow_{TippedArrowName.Replace(" ", "_")}.png" : null;
 
 		public int GetColour()
-			=> Effect != null ? Utils.GetAverageTint(new List<Effect> { Effect }) : Utils.GetAverageTint(Effects!);
+		{
+			if (Effect != null)
+				return Utils.GetAverageTint(new List<Effect> { Effect });
+			if (Effects != null)
+				return Utils.GetAverageTint(Effects);
+
+			Console.WriteLine($"No effect for {Name}");
+			return 0;
+		}
 	}
 
 	public class Effect
