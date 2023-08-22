@@ -1,4 +1,5 @@
-﻿using SixLabors.ImageSharp.Advanced;
+﻿using System.Diagnostics;
+using SixLabors.ImageSharp.Advanced;
 using Newtonsoft.Json;
 
 namespace PotionConverter
@@ -36,6 +37,8 @@ namespace PotionConverter
 				if (Directory.Exists(OUTPUT_DIRECTORY))
 					Utils.FastDeleteAll(OUTPUT_DIRECTORY, false);
 
+				Stopwatch sw = Stopwatch.StartNew();
+
 				// Potion textures
 				Image<Rgba32> potionBottle = Image.Load<Rgba32>("potion.png");
 				Image<Rgba32> splashPotionBottle = Image.Load<Rgba32>("splash_potion.png");
@@ -61,14 +64,16 @@ namespace PotionConverter
 				}));
 
 				// Create (merged) tipped arrow texture
-				tasks.Add(Task.Run(() =>
+				tasks.Add(Task.Run(async () =>
 				{
 					Console.WriteLine("Creating tipped_arrow.png");
-					CreateOverlayTexture(tippedArrowBase, tippedArrowOverlay, "tipped_arrow.png", null);
+					await ApplyOverlayTexture(tippedArrowBase, tippedArrowOverlay, "tipped_arrow.png");
 				}));
 
 				Task.WaitAll(tasks.ToArray());
-				Console.WriteLine("Done!");
+				sw.Stop();
+
+				Console.WriteLine($"Done! Took {sw.ElapsedMilliseconds}ms to generate textures!");
 			}
 			catch (Exception e)
 			{
@@ -90,24 +95,28 @@ namespace PotionConverter
 			if (potion.PotionName != null)
 			{
 				Console.WriteLine($"Creating potion: {potion.Name}");
+
+				Image<Rgba32> potionOverlay = CreateOverlayTexture(potionOverlayImage, potion.GetColour());
 				tasks.AddRange(new List<Task>
 				{
-					Task.Run(() => CreateOverlayTexture(potionImg, potionOverlayImage, potion.GetPotionName()!, potion.GetColour())),
-					Task.Run(() => CreateOverlayTexture(splashImg, potionOverlayImage, potion.GetSplashPotionName()!, potion.GetColour())),
-					Task.Run(() => CreateOverlayTexture(lingeringImg, potionOverlayImage, potion.GetLingeringPotionName()!, potion.GetColour()))
+					ApplyOverlayTexture(potionImg, potionOverlay, potion.GetPotionName()!),
+					ApplyOverlayTexture(splashImg, potionOverlay, potion.GetSplashPotionName()!),
+					ApplyOverlayTexture(lingeringImg, potionOverlay, potion.GetLingeringPotionName()!)
 				});
 			}
 
 			if (potion.TippedArrowName != null)
 			{
 				Console.WriteLine($"Creating tipped arrow: {potion.Name}");
-				tasks.Add(Task.Run(() => CreateOverlayTexture(tippedArrowBaseImg, tippedArrowOverlayImage, potion.GetTippedArrowName()!, potion.GetColour())));
+				Image<Rgba32> tippedArrowOverlay = CreateOverlayTexture(tippedArrowOverlayImage, potion.GetColour());
+
+				tasks.Add(ApplyOverlayTexture(tippedArrowBaseImg, tippedArrowOverlay, potion.GetTippedArrowName()!));
 			}
 
 			Task.WaitAll(tasks.ToArray());
 		}
 
-		private static void CreateOverlayTexture(Image baseImage, Image<Rgba32> overlayImage, string finalFileName, int? tintColor)
+		private static Image<Rgba32> CreateOverlayTexture(Image<Rgba32> overlayImage, int? tintColor)
 		{
 			Image<Rgba32> overlay = overlayImage.Clone();
 			if (tintColor != null)
@@ -130,18 +139,22 @@ namespace PotionConverter
 					}
 				});
 			}
+			return overlay;
+		}
 
+		private static async Task ApplyOverlayTexture(Image baseImage, Image overlayImage, string finalFileName)
+		{
 			using Image<Rgba32> result = new(baseImage.Width, baseImage.Height);
 			result.Mutate(context =>
 			{
-				context.DrawImage(baseImage, new Point(0, 0), 1.0f); // Draw the base image
-				context.DrawImage(overlay, new Point(0, 0), 1.0f);   // Draw the overlay
+				context.DrawImage(baseImage, new Point(0, 0), 1.0f);	    // Draw the base image
+				context.DrawImage(overlayImage, new Point(0, 0), 1.0f); // Draw the overlay
 			});
 
 			if (!Directory.Exists(OUTPUT_DIRECTORY))
 				Directory.CreateDirectory(OUTPUT_DIRECTORY);
 
-			result.Save(Path.Combine(OUTPUT_DIRECTORY, finalFileName));
+			await result.SaveAsync(Path.Combine(OUTPUT_DIRECTORY, finalFileName));
 		}
 	}
 }
