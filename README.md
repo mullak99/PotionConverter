@@ -18,7 +18,9 @@
 
 A standalone tool for converting Java Edition potion and tipped arrow textures to Bedrock.
 
-Will potentially be integrated into [MCTools](https://github.com/mullak99/MCTools) and/or [Obsidian API](https://github.com/mullak99s-Faithful/Obsidian) at some point.
+~~Will potentially be integrated into [MCTools](https://github.com/mullak99/MCTools) and/or [Obsidian API](https://github.com/mullak99s-Faithful/Obsidian) at some point.~~ -
+
+**Implemented into [MCTools](https://mctools.mullak99.co.uk/potion-converter) ([Source](https://github.com/mullak99/MCTools)).**
 
 ## Converting Java to Bedrock
 1) [Download](https://github.com/mullak99/PotionConverter/actions/workflows/dotnet-build.yml) (Open the latest successful action, and download the artifact for your OS) and extract the tool somewhere
